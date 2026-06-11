@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdf-to-markdown"
+version = "0.1.0"
+description = "Convert PDF files to Markdown using PyMuPDF4LLM (default) or Marker (optional, for scanned PDFs)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "pdf-to-markdown contributors" }]
+keywords = ["pdf", "markdown", "conversion", "llm", "ocr"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Utilities",
+]
+
+dependencies = [
+    "pymupdf4llm>=0.0.17",
+    "click>=8.1",
+]
+
+[project.optional-dependencies]
+marker = [
+    "marker-pdf>=1.0.0",
+]
+dev = [
+    "pytest>=8.0",
+    "pymupdf>=1.24",
+]
+
+[project.scripts]
+pdf2md = "pdf_to_markdown.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pdf_to_markdown"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.hatch.envs.default]
+python = "3.10"

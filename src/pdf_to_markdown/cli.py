@@ -6,8 +6,11 @@ import sys
 from pathlib import Path
 
 import click
+from dotenv import load_dotenv
 
 from pdf_to_markdown.converters import Engine, convert_pdf
+
+load_dotenv()
 
 
 def _resolve_output(input_path: Path, output: str | None) -> Path:
@@ -34,15 +37,23 @@ def main() -> None:
 )
 @click.option(
     "--engine",
-    type=click.Choice(["pymupdf4llm", "marker", "auto"], case_sensitive=False),
+    type=click.Choice(["pymupdf4llm", "marker", "claude", "auto"], case_sensitive=False),
     default="pymupdf4llm",
     show_default=True,
     help=(
         "Conversion engine. "
         "'pymupdf4llm' is fast and works on native PDFs. "
         "'marker' handles scanned PDFs via OCR (requires marker-pdf). "
+        "'claude' renders each page as an image and sends it to Claude vision API (requires anthropic). "
         "'auto' tries pymupdf4llm first and suggests Marker if text yield is low."
     ),
+)
+@click.option(
+    "--model",
+    "llm_model",
+    default="claude-opus-4-8",
+    show_default=True,
+    help="Claude model to use when --engine=claude.",
 )
 @click.option(
     "--images",
@@ -61,6 +72,7 @@ def convert_command(
     input: Path,
     output: str | None,
     engine: Engine,
+    llm_model: str,
     extract_images: bool,
     assets_dir: str | None,
 ) -> None:
@@ -72,20 +84,23 @@ def convert_command(
         pdf2md convert document.pdf
         pdf2md convert document.pdf -o result.md
         pdf2md convert document.pdf --engine marker
+        pdf2md convert document.pdf --engine claude
+        pdf2md convert document.pdf --engine claude --model claude-sonnet-4-6
         pdf2md convert document.pdf --engine auto
         pdf2md convert document.pdf --images
         pdf2md convert ./my_pdfs/ -o ./output_dir/
     """
     if input.is_dir():
-        _batch_convert(input, output, engine, extract_images, assets_dir)
+        _batch_convert(input, output, engine, llm_model, extract_images, assets_dir)
     else:
-        _single_convert(input, output, engine, extract_images, assets_dir)
+        _single_convert(input, output, engine, llm_model, extract_images, assets_dir)
 
 
 def _single_convert(
     pdf_path: Path,
     output: str | None,
     engine: Engine,
+    llm_model: str,
     extract_images: bool,
     assets_dir: str | None,
 ) -> None:
@@ -102,6 +117,18 @@ def _single_convert(
         else:
             _assets_dir = out_path.parent / "assets"
 
+    if engine == "claude":
+        import pymupdf  # noqa: PLC0415
+
+        with pymupdf.open(str(pdf_path)) as _doc:
+            n_pages = _doc.page_count
+        if n_pages > 50:
+            click.echo(
+                f"This PDF has {n_pages} pages. Each page makes a separate API call.",
+                err=True,
+            )
+            click.confirm("Continue?", default=False, abort=True)
+
     click.echo(f"Converting {pdf_path} -> {out_path} [engine={engine}]", err=True)
 
     try:
@@ -110,6 +137,7 @@ def _single_convert(
             engine=engine,
             extract_images=extract_images,
             assets_dir=_assets_dir,
+            llm_model=llm_model,
         )
     except ImportError as exc:
         click.echo(f"Error: {exc}", err=True)
@@ -130,6 +158,7 @@ def _batch_convert(
     input_dir: Path,
     output: str | None,
     engine: Engine,
+    llm_model: str,
     extract_images: bool,
     assets_dir: str | None,
 ) -> None:
@@ -161,6 +190,7 @@ def _batch_convert(
                 engine=engine,
                 extract_images=extract_images,
                 assets_dir=_assets_dir,
+                llm_model=llm_model,
             )
             out_path.parent.mkdir(parents=True, exist_ok=True)
             out_path.write_text(md_text, encoding="utf-8")

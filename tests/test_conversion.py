@@ -86,3 +86,41 @@ class TestConvertPdf:
         assets_dir = tmp_path / "assets"
         convert_pdf(pdf_path, engine="pymupdf4llm", extract_images=True, assets_dir=assets_dir)
         assert assets_dir.exists(), "assets/ directory should be created when --images is used"
+
+    def test_claude_engine_calls_api(self, tmp_path: Path) -> None:
+        """Claude engine renders each page as a PNG and sends it to the Anthropic API."""
+        from unittest.mock import MagicMock, patch
+
+        expected_text = "# Hello\n\nConverted page content."
+        pdf_path = make_sample_pdf(tmp_path / "claude.pdf")
+
+        mock_usage = MagicMock()
+        mock_usage.input_tokens = 100
+        mock_usage.output_tokens = 50
+        mock_message = MagicMock()
+        mock_message.content = [MagicMock(text=expected_text)]
+        mock_message.usage = mock_usage
+        mock_client = MagicMock()
+        mock_client.messages.create.return_value = mock_message
+        mock_anthropic = MagicMock()
+        mock_anthropic.Anthropic.return_value = mock_client
+
+        with patch.dict("sys.modules", {"anthropic": mock_anthropic}):
+            result = convert_pdf(pdf_path, engine="claude")
+
+        assert expected_text in result
+        mock_client.messages.create.assert_called_once()
+        call_kwargs = mock_client.messages.create.call_args
+        assert call_kwargs.kwargs["model"] == "claude-opus-4-8"
+        content = call_kwargs.kwargs["messages"][0]["content"]
+        assert any(block["type"] == "image" for block in content)
+
+    def test_claude_engine_missing_package(self, tmp_path: Path) -> None:
+        """ImportError with an install hint is raised when anthropic is not installed."""
+        import sys
+        from unittest.mock import patch
+
+        pdf_path = make_sample_pdf(tmp_path / "no_anthropic.pdf")
+        with patch.dict("sys.modules", {"anthropic": None}):
+            with pytest.raises(ImportError, match="anthropic"):
+                convert_pdf(pdf_path, engine="claude")

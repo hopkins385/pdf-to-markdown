@@ -22,6 +22,8 @@ PyMuPDF4LLM is the right default for most use cases. Marker is available when yo
 pip install pdf-to-markdown
 ```
 
+Not yet published to PyPI; until then, use the [development install](#development-install) below.
+
 ### With Marker support
 
 ```bash
@@ -147,6 +149,8 @@ pdf2md convert ./my_pdfs/ -o ./output_dir/
 ```
 
 Output files mirror the input directory structure under `./output_dir/`.
+
+Conversion continues even if individual files fail. Failed files are listed at the end, and the command exits with status 1 if any conversion failed.
 
 ### Version
 

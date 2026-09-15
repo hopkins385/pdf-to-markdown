@@ -1,12 +1,6 @@
 # Engines
 
-## Comparison
-
-| Engine      | Speed          | Scanned PDFs   | Complex layouts | Install size      |
-| ----------- | -------------- | -------------- | ---------------- | ----------------- |
-| PyMuPDF4LLM | Very fast      | No (text only) | Limited          | Small             |
-| Marker      | Slower         | Yes (OCR)      | Good              | Large (ML models) |
-| Claude      | Depends on API | Yes            | Best              | Small (API call)  |
+See the engine overview table in the [README](../README.md#engines) for a quick comparison.
 
 ## Auto mode
 

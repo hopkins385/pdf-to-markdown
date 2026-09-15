@@ -51,7 +51,6 @@ dmypy.json
 *.md
 !README.md
 !CONTRIBUTING.md
-!RESEARCH.md
 !docs/**/*.md
 
 # Jupyter

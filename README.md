@@ -2,7 +2,15 @@
 
 Convert PDF files to Markdown from the command line.
 
-Three engines: **PyMuPDF4LLM** (default, fast, native text PDFs), **Marker** (OCR for scanned PDFs), and **Claude** (vision API, best quality on complex layouts). See [docs/ENGINES.md](docs/ENGINES.md) for a full comparison and Claude pricing.
+## Engines
+
+| Engine      | Flag                  | Speed          | Scanned PDFs   | Complex layouts | Install size      |
+| ----------- | --------------------- | -------------- | -------------- | ---------------- | ----------------- |
+| PyMuPDF4LLM | `--engine pymupdf4llm` (default) | Very fast      | No (text only) | Limited          | Small             |
+| Marker      | `--engine marker`     | Slower         | Yes (OCR)      | Good              | Large (ML models) |
+| Claude      | `--engine claude`     | Depends on API | Yes            | Best              | Small (API call)  |
+
+See [docs/ENGINES.md](docs/ENGINES.md) for auto-mode behavior and Claude pricing, and [docs/RESEARCH.md](docs/RESEARCH.md) for the research behind these choices.
 
 ## Installation
 

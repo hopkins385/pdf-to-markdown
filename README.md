@@ -34,7 +34,7 @@ pip install "pdf-to-markdown[marker]"
 pip install "pdf-to-markdown[claude]"
 ```
 
-Requires an `ANTHROPIC_API_KEY` environment variable (or a `.env` file in the working directory).
+Requires an `ANTHROPIC_API_KEY` environment variable (or a `.env` file in the working directory, see `.env.example`).
 
 ### Development install
 

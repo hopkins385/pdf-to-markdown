@@ -52,6 +52,7 @@ dmypy.json
 !README.md
 !CONTRIBUTING.md
 !RESEARCH.md
+!docs/**/*.md
 
 # Jupyter
 .ipynb_checkpoints/

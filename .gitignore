@@ -20,7 +20,6 @@ ENV/
 
 # uv
 .uv/
-uv.lock
 
 # Pytest / coverage
 .pytest_cache/
@@ -37,6 +36,7 @@ dmypy.json
 # IDE
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
@@ -50,6 +50,8 @@ dmypy.json
 *.pdf
 *.md
 !README.md
+!CONTRIBUTING.md
+!RESEARCH.md
 
 # Jupyter
 .ipynb_checkpoints/

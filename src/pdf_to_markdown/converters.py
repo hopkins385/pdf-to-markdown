@@ -124,7 +124,10 @@ def _convert_with_claude(
             import click  # noqa: PLC0415
 
             click.echo(f"  [claude] page {i}/{n_pages} ...", err=True)
-            pix = page.get_pixmap(matrix=pymupdf.Matrix(2, 2))
+            # Cap scale so neither dimension exceeds the 8000-pixel API limit.
+            _MAX_DIM = 7900
+            _scale = min(2.0, _MAX_DIM / max(page.rect.width, page.rect.height))
+            pix = page.get_pixmap(matrix=pymupdf.Matrix(_scale, _scale))
             png_bytes = pix.tobytes("png")
             b64 = base64.standard_b64encode(png_bytes).decode()
 

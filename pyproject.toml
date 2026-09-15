@@ -41,6 +41,11 @@ dev = [
     "pymupdf>=1.24",
 ]
 
+[project.urls]
+Homepage = "https://github.com/hopkins385/pdf-to-markdown"
+Repository = "https://github.com/hopkins385/pdf-to-markdown"
+Issues = "https://github.com/hopkins385/pdf-to-markdown/issues"
+
 [project.scripts]
 pdf2md = "pdf_to_markdown.cli:main"
 

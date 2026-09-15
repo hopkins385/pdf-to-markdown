@@ -6,11 +6,11 @@ Three conversion engines are supported. **PyMuPDF4LLM** is the default: fast, no
 
 ## Why these engines?
 
-| Engine | Speed | Scanned PDFs | Complex layouts | Install size |
-|---|---|---|---|---|
-| PyMuPDF4LLM | Very fast | No (text only) | Limited | Small |
-| Marker | Slower | Yes (OCR) | Good | Large (ML models) |
-| Claude | Depends on API | Yes | Best | Small (API call) |
+| Engine      | Speed          | Scanned PDFs   | Complex layouts | Install size      |
+| ----------- | -------------- | -------------- | --------------- | ----------------- |
+| PyMuPDF4LLM | Very fast      | No (text only) | Limited         | Small             |
+| Marker      | Slower         | Yes (OCR)      | Good            | Large (ML models) |
+| Claude      | Depends on API | Yes            | Best            | Small (API call)  |
 
 PyMuPDF4LLM is the right default for most use cases. Marker is available when you need local OCR. Claude is the best choice for high-fidelity conversion when quality matters more than cost.
 
@@ -39,7 +39,7 @@ Requires an `ANTHROPIC_API_KEY` environment variable (or a `.env` file in the wo
 ### Development install
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/hopkins385/pdf-to-markdown.git
 cd pdf-to-markdown
 uv venv
 source .venv/bin/activate
@@ -52,6 +52,10 @@ uv pip install -e ".[dev]"
 
 ```bash
 pdf2md convert document.pdf
+```
+
+```bash
+source .venv/bin/activate && pdf2md convert "path/to/the/file.pdf"
 ```
 
 Writes `document.md` in the same directory.
@@ -95,18 +99,18 @@ PDFs with more than 50 pages prompt for confirmation before starting, since each
 
 #### Claude model pricing
 
-| Model | Input | Output |
-|---|---|---|
-| claude-fable-5 | $10.00 / MTok | $50.00 / MTok |
-| claude-mythos-5 | $10.00 / MTok | $50.00 / MTok |
-| claude-opus-4-8 | $5.00 / MTok | $25.00 / MTok |
-| claude-opus-4-7 | $5.00 / MTok | $25.00 / MTok |
-| claude-opus-4-6 | $5.00 / MTok | $25.00 / MTok |
-| claude-opus-4-5 | $5.00 / MTok | $25.00 / MTok |
-| claude-sonnet-4-6 | $3.00 / MTok | $15.00 / MTok |
-| claude-sonnet-4-5 | $3.00 / MTok | $15.00 / MTok |
-| claude-haiku-4-5 | $1.00 / MTok | $5.00 / MTok |
-| claude-haiku-3-5 | $0.80 / MTok | $4.00 / MTok |
+| Model             | Input         | Output        |
+| ----------------- | ------------- | ------------- |
+| claude-fable-5    | $10.00 / MTok | $50.00 / MTok |
+| claude-mythos-5   | $10.00 / MTok | $50.00 / MTok |
+| claude-opus-4-8   | $5.00 / MTok  | $25.00 / MTok |
+| claude-opus-4-7   | $5.00 / MTok  | $25.00 / MTok |
+| claude-opus-4-6   | $5.00 / MTok  | $25.00 / MTok |
+| claude-opus-4-5   | $5.00 / MTok  | $25.00 / MTok |
+| claude-sonnet-4-6 | $3.00 / MTok  | $15.00 / MTok |
+| claude-sonnet-4-5 | $3.00 / MTok  | $15.00 / MTok |
+| claude-haiku-4-5  | $1.00 / MTok  | $5.00 / MTok  |
+| claude-haiku-3-5  | $0.80 / MTok  | $4.00 / MTok  |
 
 Source: [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing).
 
@@ -172,4 +176,4 @@ pdf-to-markdown/
 
 ## License
 
-MIT
+MIT, see [LICENSE](LICENSE).

@@ -142,6 +142,8 @@ Images are saved to `assets/` next to the output file. Use `--assets-dir` to ove
 pdf2md convert document.pdf --images --assets-dir ./my_images/
 ```
 
+`--images` has no effect with `--engine claude`; the Claude engine doesn't extract embedded images.
+
 ### Batch convert a directory
 
 ```bash

@@ -18,14 +18,14 @@ Engine = Literal["pymupdf4llm", "marker", "claude", "auto"]
 
 _MARKER_INSTALL_HINT = (
     'Marker is not installed. Install it with:\n'
-    '    pip install "pdf-to-markdown[marker]"\n'
+    '    uv pip install -e ".[marker]"\n'
     'or:\n'
     '    pip install marker-pdf'
 )
 
 _CLAUDE_INSTALL_HINT = (
     'anthropic is not installed. Install it with:\n'
-    '    pip install "pdf-to-markdown[claude]"\n'
+    '    uv pip install -e ".[claude]"\n'
     'or:\n'
     '    pip install anthropic'
 )

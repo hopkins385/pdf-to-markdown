@@ -45,4 +45,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+This repo's own code is MIT, see [LICENSE](LICENSE).
+
+The default engine depends on `PyMuPDF` / `pymupdf4llm`, which are dual-licensed under **AGPL-3.0 or a commercial Artifex license**. They are not MIT. If you distribute this tool or run it as a network service, review the AGPL terms or obtain a commercial PyMuPDF license. Check the `marker` extra's license separately if you enable it.
